@@ -12,6 +12,7 @@ import pickle
 import sys
 import traceback
 import time
+import subprocess
 
 import pandas as pd
 from sklearn import tree
@@ -50,9 +51,22 @@ def prepare():
     print("check networking ...")
     os.system("ip addr")
     
+    print()
+    print("check process ...")
+    os.system("ps -ef")
+
+    print()
+    print("check listening port ...")
+    os.system("ss -tulpn")
+
     print("sleeping for ssh ...")
     time.sleep(3000)
 
+
+def start_ssh_daemon():
+    print()
+    print("Enable SSH connections ...")
+    subprocess.Popen(["/usr/sbin/sshd", "-D"])
 
 # The function to execute the training.
 def train():
@@ -103,11 +117,12 @@ def train():
 
 if __name__ == '__main__':
     print("\n")
+    start_ssh_daemon()
 
+    print("\n")
     prepare()
 
     print("\n")
-
     train()
 
     print("\n")

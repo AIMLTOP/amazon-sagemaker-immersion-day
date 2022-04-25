@@ -15,10 +15,12 @@ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 ```
 
 
+ssh-keygen -q -t rsa -N '' -f ~/.ssh/id_rsa_notebook
+cat ~/.ssh/id_rsa_notebook.pub >> ~/.ssh/authorized_keys
 
 
 ```shell
-./gen_key.sh
+./gen_key.sh ~/.ssh/id_rsa_notebook
 ```
 
 3. Download `authorized_keys` and `id_rsa`
