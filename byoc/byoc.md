@@ -10,9 +10,9 @@ Create a new no-ingress EC2 instance for environment (access via Systems Manager
 
 ```shell
 ssh-keygen -q -t rsa -N '' -f ~/.ssh/id_rsa
+```
 
 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
-```
 
 
 ssh-keygen -q -t rsa -N '' -f ~/.ssh/id_rsa_notebook
@@ -33,6 +33,11 @@ mkdir -p ~/environment/ssh
 
 cp -R ~/.ssh/* ~/environment/ssh
 ``` 
+
+
+4. Login
+
+ssh root@container_ip
 
 
 Step 1/19 : FROM ubuntu:18.04

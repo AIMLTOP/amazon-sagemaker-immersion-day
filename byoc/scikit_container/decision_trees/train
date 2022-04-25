@@ -59,8 +59,8 @@ def prepare():
     print("check listening port ...")
     os.system("ss -tulpn")
 
-    print("sleeping for ssh ...")
-    time.sleep(3000)
+    print("sleeping for ssh (5 mins) ...")
+    time.sleep(300)
 
 
 def start_ssh_daemon():

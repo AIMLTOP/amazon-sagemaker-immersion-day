@@ -50,7 +50,7 @@ RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so
 # Copy SSH key.
 RUN mkdir -p /root/.ssh/
 COPY ssh/id_rsa.pub /root/.ssh/authorized_keys
-COPY ssh/id_rsa /root/.ssh/id_rsa
+#COPY ssh/id_rsa /root/.ssh/id_rsa # only for self managed ddp
 
 RUN printf "Host *\n  StrictHostKeyChecking no\n  UserKnownHostsFile /dev/null\n" >> /root/.ssh/config
 
