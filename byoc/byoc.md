@@ -23,6 +23,9 @@ cat ~/.ssh/id_rsa_notebook.pub >> ~/.ssh/authorized_keys
 ./gen_key.sh ~/.ssh/id_rsa_notebook
 ```
 
+COPY ssh /root/.ssh
+
+
 3. Download `authorized_keys` and `id_rsa`
 
 ```shell
