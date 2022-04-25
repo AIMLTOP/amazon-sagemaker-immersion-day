@@ -28,3 +28,16 @@ mkdir -p ~/environment/ssh
 
 cp -R ~/.ssh/* ~/environment/ssh
 ``` 
+
+
+
+    # https://github.com/aws/sagemaker-training-toolkit/blob/master/ENVIRONMENT_VARIABLES.md
+    hosts = json.loads(os.environ['SM_HOSTS'])
+    gpus = len(hosts)*int(os.environ['SM_NUM_GPUS'])
+    current_host = os.environ['SM_CURRENT_HOST']
+    print("hosts: " + hosts)
+    print("current host: " + current_host)
+    print("gpus: " + gpus)
+
+    print(" hostfile ")    
+    os.system("cat /opt/ml/input/config/hostfile")

@@ -11,6 +11,7 @@ import os
 import pickle
 import sys
 import traceback
+import time
 
 import pandas as pd
 from sklearn import tree
@@ -48,18 +49,10 @@ def prepare():
     print()
     print("check networking ...")
     os.system("ip addr")
-    os.system("ifconfig")
-    print(" hostfile ")    
-    os.system("cat /opt/ml/input/config/hostfile")
-
-    # https://github.com/aws/sagemaker-training-toolkit/blob/master/ENVIRONMENT_VARIABLES.md
-    hosts = json.loads(os.environ['SM_HOSTS'])
-    gpus = len(hosts)*int(os.environ['SM_NUM_GPUS'])
-    current_host = os.environ['SM_CURRENT_HOST']
-    print("hosts: " + hosts)
-    print("current host: " + current_host)
-    print("gpus: " + gpus)
     
+    print("sleeping for ssh ...")
+    time.sleep(3000)
+
 
 # The function to execute the training.
 def train():
