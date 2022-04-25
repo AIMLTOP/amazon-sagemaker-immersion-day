@@ -4,6 +4,7 @@
 1. Launch Cloud9
 Create a new no-ingress EC2 instance for environment (access via Systems Manager)
 
+绑定安全组
 
 2. Generate SSH
 
@@ -20,7 +21,7 @@ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 ./gen_key.sh
 ```
 
-1. Download `authorized_keys` and `id_rsa`
+3. Download `authorized_keys` and `id_rsa`
 
 ```shell
 mkdir -p ~/environment/ssh
