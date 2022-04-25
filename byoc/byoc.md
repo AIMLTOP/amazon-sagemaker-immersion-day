@@ -13,10 +13,17 @@ ssh-keygen -q -t rsa -N '' -f ~/.ssh/id_rsa
 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 ```
 
-3. Download `authorized_keys` and `id_rsa`
+
+
+
+```shell
+./gen_key.sh
+```
+
+1. Download `authorized_keys` and `id_rsa`
 
 ```shell
 mkdir -p ~/environment/ssh
 
 cp -R ~/.ssh/* ~/environment/ssh
-```
+``` 
