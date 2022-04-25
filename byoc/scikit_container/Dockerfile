@@ -2,7 +2,8 @@
 # This is a Python 3 image that uses the nginx, gunicorn, flask stack
 # for serving inferences in a stable way.
 
-FROM ubuntu:18.04
+# FROM ubuntu:18.04 # has limit
+FROM public.ecr.aws/lts/ubuntu:18.04_stable
 
 MAINTAINER Amazon AI <sage-learner@amazon.com>
 

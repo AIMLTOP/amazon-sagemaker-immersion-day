@@ -30,6 +30,9 @@ cp -R ~/.ssh/* ~/environment/ssh
 ``` 
 
 
+Step 1/19 : FROM ubuntu:18.04
+toomanyrequests: You have reached your pull rate limit. You may increase the limit by authenticating and upgrading: https://www.docker.com/increase-rate-limit
+
 
     # https://github.com/aws/sagemaker-training-toolkit/blob/master/ENVIRONMENT_VARIABLES.md
     hosts = json.loads(os.environ['SM_HOSTS'])
