@@ -41,6 +41,10 @@ def prepare():
     print("check disk partion and space (df -h) ...")
     os.system("df -h")
 
+    print()
+    print("check ssh key ...")
+    os.system("ls -l /root/.ssh")
+
 
 
 # The function to execute the training.
