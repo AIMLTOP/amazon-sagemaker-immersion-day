@@ -24,11 +24,6 @@ Parameters:
     Default: 10.0.32.0/20
     Description: CidrBlock for public subnet 03 within the VPC
 
-  PublicSubnet04Block:
-    Type: String
-    Default: 10.0.48.0/20
-    Description: CidrBlock for public subnet 04 within the VPC
-
   PrivateSubnet01Block:
     Type: String
     Default: 10.0.128.0/20
@@ -43,11 +38,6 @@ Parameters:
     Type: String
     Default: 10.0.160.0/20
     Description: CidrBlock for private subnet 03 within the VPC
-
-  PrivateSubnet04Block:
-    Type: String
-    Default: 10.0.176.0/20
-    Description: CidrBlock for private subnet 04 within the VPC
 
   NamePrefix:
     Type: String
@@ -66,11 +56,9 @@ Metadata:
           - PublicSubnet01Block
           - PublicSubnet02Block
           - PublicSubnet03Block
-          - PublicSubnet04Block
           - PrivateSubnet01Block
           - PrivateSubnet02Block
           - PrivateSubnet03Block
-          - PrivateSubnet04Block
           - NamePrefix
 
 Resources:
@@ -133,16 +121,6 @@ Resources:
       - Key: Network
         Value: Private03
 
-  PrivateRouteTable04:
-    Type: AWS::EC2::RouteTable
-    Properties:
-      VpcId: !Ref VPC
-      Tags:
-      - Key: Name
-        Value: Private Subnet AZ4
-      - Key: Network
-        Value: Private04
-
   PublicRoute:
     DependsOn: VPCGatewayAttachment
     Type: AWS::EC2::Route
@@ -178,15 +156,6 @@ Resources:
       DestinationCidrBlock: 0.0.0.0/0
       NatGatewayId: !Ref NatGateway03
 
-  PrivateRoute04:
-    DependsOn:
-    - VPCGatewayAttachment
-    Type: AWS::EC2::Route
-    Properties:
-      RouteTableId: !Ref PrivateRouteTable04
-      DestinationCidrBlock: 0.0.0.0/0
-      NatGatewayId: !Ref NatGateway04
-
   NatGatewayEIP1:
     DependsOn:
     - VPCGatewayAttachment
@@ -202,13 +171,6 @@ Resources:
       Domain: vpc
 
   NatGatewayEIP3:
-    DependsOn:
-    - VPCGatewayAttachment
-    Type: 'AWS::EC2::EIP'
-    Properties:
-      Domain: vpc
-
-  NatGatewayEIP4:
     DependsOn:
     - VPCGatewayAttachment
     Type: 'AWS::EC2::EIP'
@@ -247,17 +209,6 @@ Resources:
       Tags:
       - Key: Name
         Value: !Sub '${NamePrefix}-NatGatewayAZ3'
-
-  NatGateway04:
-    DependsOn:
-    - VPCGatewayAttachment
-    Type: AWS::EC2::NatGateway
-    Properties:
-      AllocationId: !GetAtt 'NatGatewayEIP4.AllocationId'
-      SubnetId: !Ref PublicSubnet04
-      Tags:
-      - Key: Name
-        Value: !Sub '${NamePrefix}-NatGatewayAZ4'
 
   PublicSubnet01:
     Type: AWS::EC2::Subnet
@@ -314,27 +265,6 @@ Resources:
             Ref: AWS::Region
       CidrBlock:
         Ref: PublicSubnet03Block
-      VpcId:
-        Ref: VPC
-      Tags:
-      - Key: Name
-        Value: !Sub "${NamePrefix}-PublicSubnet03"
-      - Key: kubernetes.io/role/elb
-        Value: 1
-
-  PublicSubnet04:
-    Type: AWS::EC2::Subnet
-    Metadata:
-      Comment: Subnet 04
-    Properties:
-      MapPublicIpOnLaunch: true
-      AvailabilityZone:
-        Fn::Select:
-        - '3'
-        - Fn::GetAZs:
-            Ref: AWS::Region
-      CidrBlock:
-        Ref: PublicSubnet04Block
       VpcId:
         Ref: VPC
       Tags:
@@ -403,26 +333,6 @@ Resources:
       - Key: kubernetes.io/role/internal-elb
         Value: 1
 
-  PrivateSubnet04:
-    Type: AWS::EC2::Subnet
-    Metadata:
-      Comment: Private Subnet 04
-    Properties:
-      AvailabilityZone:
-        Fn::Select:
-        - '3'
-        - Fn::GetAZs:
-            Ref: AWS::Region
-      CidrBlock:
-        Ref: PrivateSubnet04Block
-      VpcId:
-        Ref: VPC
-      Tags:
-      - Key: Name
-        Value: !Sub "${NamePrefix}-PrivateSubnet04"
-      - Key: kubernetes.io/role/internal-elb
-        Value: 1
-
   PublicSubnet01RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
@@ -439,12 +349,6 @@ Resources:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       SubnetId: !Ref PublicSubnet03
-      RouteTableId: !Ref PublicRouteTable
-
-  PublicSubnet04RouteTableAssociation:
-    Type: AWS::EC2::SubnetRouteTableAssociation
-    Properties:
-      SubnetId: !Ref PublicSubnet04
       RouteTableId: !Ref PublicRouteTable
 
   PrivateSubnet01RouteTableAssociation:
@@ -464,12 +368,6 @@ Resources:
     Properties:
       SubnetId: !Ref PrivateSubnet03
       RouteTableId: !Ref PrivateRouteTable03
-
-  PrivateSubnet04RouteTableAssociation:
-    Type: AWS::EC2::SubnetRouteTableAssociation
-    Properties:
-      SubnetId: !Ref PrivateSubnet04
-      RouteTableId: !Ref PrivateRouteTable04
 
   InternalSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -550,10 +448,6 @@ Outputs:
     Description: A reference to the public subnet in the 3rd Availability Zone
     Value: !Ref PublicSubnet03
 
-  PublicSubnet4:
-    Description: A reference to the public subnet in the 4th Availability Zone
-    Value: !Ref PublicSubnet04
-
   PrivateSubnet1:
     Description: A reference to the private subnet in the 1st Availability Zone
     Value: !Ref PrivateSubnet01
@@ -566,10 +460,6 @@ Outputs:
     Description: A reference to the private subnet in the 3rd Availability Zone
     Value: !Ref PrivateSubnet03
 
-  PrivateSubnet4:
-    Description: A reference to the private subnet in the 4th Availability Zone
-    Value: !Ref PrivateSubnet04
-
   NatGateway01:
     Description: A reference to the Nat Gateway in the 1st Availability Zone
     Value: !Ref NatGateway01
@@ -581,7 +471,3 @@ Outputs:
   NatGateway03:
     Description: A reference to the Nat Gateway in the 3rd Availability Zone
     Value: !Ref NatGateway03
-
-  NatGateway04:
-    Description: A reference to the Nat Gateway in the 4th Availability Zone
-    Value: !Ref NatGateway04
