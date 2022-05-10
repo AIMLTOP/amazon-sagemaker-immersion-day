@@ -40,7 +40,7 @@ ENV PATH="/opt/program:${PATH}"
 # SSH Daemon
 ##############################################################################
 
-# Set up SSH Server
+# Set up SSH server
 RUN apt-get update && apt-get install -y --no-install-recommends openssh-server && \
     mkdir -p /var/run/sshd
 
