@@ -37,7 +37,7 @@ ENV PATH="/opt/program:${PATH}"
 
 
 ##############################################################################
-# Client Liveness & Uncomment Port 22 for SSH Daemon
+# SSH Daemon
 ##############################################################################
 
 # SSH. Partially taken from https://docs.docker.com/engine/examples/running_ssh_service/
@@ -55,7 +55,7 @@ RUN printf "Host *\n  StrictHostKeyChecking no\n  UserKnownHostsFile /dev/null\n
 
 RUN chmod 600 /root/.ssh -R
 
-# # Keep SSH client alive from server side
+# # Client liveness, keep SSH client alive from server side
 RUN echo "ClientAliveInterval 30" >> /etc/ssh/sshd_config
 RUN cp /etc/ssh/sshd_config ${STAGE_DIR}/sshd_config && \
     sed "0,/^#Port 22/s//Port 22/" ${STAGE_DIR}/sshd_config > /etc/ssh/sshd_config
