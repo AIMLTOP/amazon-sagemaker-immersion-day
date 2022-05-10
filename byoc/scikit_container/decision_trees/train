@@ -3,7 +3,6 @@
 # A sample training component that trains a simple scikit-learn decision tree model.
 # This implementation works in File mode and makes no assumptions about the input file names.
 # Input is specified as CSV with a data point in each row and the labels in the first column.
-
 from __future__ import print_function
 
 import json
@@ -18,7 +17,6 @@ import pandas as pd
 from sklearn import tree
 
 # These are the paths to where SageMaker mounts interesting things in your container.
-
 prefix = '/opt/ml/'
 
 input_path = prefix + 'input/data'
@@ -31,46 +29,38 @@ param_path = os.path.join(prefix, 'input/config/hyperparameters.json')
 channel_name='training'
 training_path = os.path.join(input_path, channel_name)
 
-
 # Prepare
 def prepare():
-    print('Preare File System and Load Training Data ...')
+    print('\n\nPreare File System and Load Training Data ...')
 
-    print("check block devices (lsblk) ...")
+    print("\ncheck block devices (lsblk) ...")
     os.system("lsblk")
 
-    print()
-    print("check disk partion and space (df -h) ...")
+    print("\ncheck disk partion and space (df -h) ...")
     os.system("df -h")
 
-    print()
-    print("check ssh key ...")
+    print("\ncheck ssh key ...")
     os.system("ls -l /root/.ssh")
 
-    print()
-    print("check networking ...")
+    print("\ncheck networking ...")
     os.system("ip addr")
     
-    print()
-    print("check process ...")
+    print("\ncheck process ...")
     os.system("ps -ef")
 
-    print()
-    print("check listening port ...")
+    print("\ncheck listening port ...")
     os.system("ss -tulpn")
 
-    print("sleeping for ssh (5 mins) ...")
+    print("\nsleeping for ssh (5 mins) ...")
     time.sleep(300)
 
-
 def start_ssh_daemon():
-    print()
-    print("Enable SSH connections ...")
+    print("\n\nEnable SSH connections ...")
     subprocess.Popen(["/usr/sbin/sshd", "-D"])
 
 # The function to execute the training.
 def train():
-    print('Starting the training.')
+    print('\n\nStarting the training.')
     try:
         # Read in any hyperparameters that the user passed with the training job
         with open(param_path, 'r') as tc:
@@ -103,7 +93,7 @@ def train():
         # save the model
         with open(os.path.join(model_path, 'decision-tree-model.pkl'), 'wb') as out:
             pickle.dump(clf, out)
-        print('Training complete.')
+        print('Training complete.\n')
     except Exception as e:
         # Write out an error file. This will be returned as the failureReason in the
         # DescribeTrainingJob result.
@@ -116,15 +106,11 @@ def train():
         sys.exit(255)
 
 if __name__ == '__main__':
-    print("\n")
     start_ssh_daemon()
 
-    print("\n")
     prepare()
 
-    print("\n")
     train()
 
-    print("\n")
     # A zero exit code causes the job to be marked a Succeeded.
     sys.exit(0)
