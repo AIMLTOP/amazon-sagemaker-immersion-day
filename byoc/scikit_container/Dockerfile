@@ -40,7 +40,7 @@ ENV PATH="/opt/program:${PATH}"
 # SSH Daemon
 ##############################################################################
 
-# SSH. Partially taken from https://docs.docker.com/engine/examples/running_ssh_service/
+# Set up SSH Server
 RUN apt-get update && apt-get install -y --no-install-recommends openssh-server && \
     mkdir -p /var/run/sshd
 
